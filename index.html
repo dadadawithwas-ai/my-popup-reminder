@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" translate="no">
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <title>Video Alarm</title>
     <style>
         body, html {
@@ -11,6 +12,7 @@
             height: 100%;
             background-color: black;
             overflow: hidden;
+            cursor: none; /* ซ่อนเคอร์เซอร์ */
         }
         video {
             width: 100vw;
@@ -22,21 +24,20 @@
 </head>
 <body>
 
-    <!-- ตัดเสียง Mute ออกเพื่อให้มีเสียง และเล่นวนลูปอัตโนมัติ -->
-    <video id="alarmVideo" autoplay loop playsinline>
-        <source src="ลุกค่ะ มาขยับกัน ไปกับท่าที่ทำได้ในชีวิตประจำวัน_compressed_25MB.mp4" type="video/mp4">
+    <video id="alarmVideo" autoplay loop playsinline preload="auto">
+        <source src="video.mp4" type="video/mp4">
         เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
     </video>
 
     <script>
         const video = document.getElementById('alarmVideo');
 
-        // บังคับเปิดโหมด Fullscreen และพยายามเปิดเสียงทันทีที่หน้าเว็บโหลด
         window.addEventListener('load', () => {
             document.documentElement.requestFullscreen().catch(() => {});
             video.muted = false;
+            video.volume = 1;
             video.play().catch(() => {
-                // หากเบราว์เซอร์บล็อกเสียงอัตโนมัติ ให้คลิกที่ไหนก็ได้ในจอเพื่อเปิดเสียง
+                // สำรอง: ถ้าเบราว์เซอร์บล็อกเสียง คลิกที่ไหนก็ได้เพื่อเริ่ม
                 document.body.addEventListener('click', () => {
                     video.muted = false;
                     video.play();
@@ -44,8 +45,7 @@
             });
         });
 
-        // ป้องกันการคลิกขวาเพื่อไม่ให้กดปิดหรือกดเมนูควบคุม
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 
 </body>
